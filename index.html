@@ -45,6 +45,11 @@
     .hidden {
       display: none;
     }
+    .privacy {
+      font-size: 0.75em;
+      opacity: 0.6;
+      margin-top: 15px;
+    }
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -65,15 +70,16 @@
   <div class="container hidden" id="form">
     <h1>Solicitud privada</h1>
 
-    <input type="text" placeholder="Nombre completo" required>
+    <input type="text" id="name" placeholder="Nombre completo" required>
+    <input type="email" id="email" placeholder="Correo electrónico" required>
     
-    <select>
+    <select id="country" required>
       <option value="">País de residencia</option>
       <option>México</option>
       <option>Otro</option>
     </select>
 
-    <select>
+    <select id="budget" required>
       <option value="">Presupuesto mínimo disponible</option>
       <option>Menos de $15 M MXN</option>
       <option>$15–20 M MXN</option>
@@ -82,6 +88,11 @@
     </select>
 
     <button onclick="submitForm()">Enviar solicitud</button>
+
+    <p class="privacy">
+      Sus datos son confidenciales y solo serán utilizados para evaluar la viabilidad del proyecto. 
+      No se compartirán con terceros.
+    </p>
   </div>
 
   <!-- MENSAJE FINAL -->
@@ -91,8 +102,9 @@
     <p><strong>Usted será contactado.</strong></p>
 
     <p style="margin-top:40px; font-size:0.85em; opacity:0.6;">
-      Donaciones voluntarias Bitcoin:<br>
-      bc1qt8shw83caflya0mpps2tn9npshv0ghn7vr7lkr 
+      Donaciones voluntarias:<br>
+      Metamask / Crypto: <strong>0xTuWalletAqui</strong><br>
+      También puede enviar mensaje al WhatsApp: <strong>+52XXXXXXXXXX</strong>
     </p>
   </div>
 
@@ -103,6 +115,26 @@
     }
 
     function submitForm() {
+      // Tomar los valores
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const country = document.getElementById("country").value;
+      const budget = document.getElementById("budget").value;
+
+      // Validar campos obligatorios
+      if (!name || !email || !country || !budget) {
+        alert("Por favor completa todos los campos antes de enviar.");
+        return;
+      }
+
+      // Validar formato de correo simple
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      if (!emailPattern.test(email)) {
+        alert("Por favor ingresa un correo válido.");
+        return;
+      }
+
+      // Mostrar mensaje final
       document.getElementById("form").classList.add("hidden");
       document.getElementById("thanks").classList.remove("hidden");
     }
