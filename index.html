@@ -27,7 +27,7 @@
       <option value="">País</option>
       <option value="México">México</option>
     </select>
-    <input type="number" id="budget" placeholder="Presupuesto mínimo (MXN)">
+    <input type="number" id="budget" placeholder="Presupuesto mínimo 15,000,000 MXN">
     <button onclick="submitForm()">Enviar Solicitud</button>
     <p style="font-size:12px;">Tus datos son confidenciales y serán usados solo para evaluación de BunkerMex.</p>
   </div>
@@ -36,9 +36,8 @@
     <h2>Gracias por enviar tu solicitud</h2>
     <p>Te contactaremos pronto vía correo electrónico.</p>
     <p>Si deseas, puedes apoyar con una donación a nuestra wallet:</p>
-    <p> BTC Metamask: <b>bc1qt8shw83caflya0mpps2tn9npshv0ghn7vr7lkr</b></p>
-<p> ETH Metamask: <b>
-0x9D00E37661c4AaAC96b7f385d0B8BcDA5f243D6a</b></p>
+    <p>BTC Metamask: <b>bc1qt8shw83caflya0mpps2tn9npshv0ghn7vr7lkr</b></p>
+    <p>ETH Metamask: <b>0x9D00E37661c4AaAC96b7f385d0B8BcDA5f243D6a</b></p>
   </div>
 
   <!-- Firebase -->
@@ -69,7 +68,7 @@
       const name = document.getElementById("name").value.trim();
       const email = document.getElementById("email").value.trim();
       const country = document.getElementById("country").value;
-      const budget = document.getElementById("budget").value;
+      const budget = Number(document.getElementById("budget").value);
 
       if (!name || !email || !country || !budget) {
         alert("Por favor completa todos los campos antes de enviar.");
@@ -79,6 +78,11 @@
       const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
       if (!emailPattern.test(email)) {
         alert("Por favor ingresa un correo válido.");
+        return;
+      }
+
+      if (budget < 15000000) {
+        alert("El presupuesto mínimo aceptado es de 15,000,000 MXN.");
         return;
       }
 
