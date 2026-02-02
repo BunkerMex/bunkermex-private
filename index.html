@@ -2,10 +2,58 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BunkerMex</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      letter-spacing: 2px;
+    }
+
+    p {
+      opacity: 0.8;
+      margin-top: 10px;
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 12px 28px;
+      background: transparent;
+      border: 1px solid #fff;
+      color: #fff;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
 </head>
-<body style="background:black;color:white;text-align:center;padding-top:40vh;">
-  <h1>BunkerMex</h1>
-  <p>Infraestructura privada y espacios de resguardo</p>
+
+<body>
+  <div class="container">
+    <h1>BUNKERMEX</h1>
+    <p>Infraestructura privada y espacios de resguardo</p>
+    <button>Solicitar acceso</button>
+  </div>
 </body>
 </html>
