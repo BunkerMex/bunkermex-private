@@ -10,28 +10,21 @@
       margin: 0;
       background: #000;
       color: #fff;
-      font-family: Arial, Helvetica, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      font-family: Arial, sans-serif;
       text-align: center;
     }
-
     .container {
-      animation: fadeIn 2s ease-in-out;
+      padding: 40px 20px;
+      animation: fadeIn 1.2s ease-in;
     }
-
     h1 {
       font-size: 2.2em;
       letter-spacing: 2px;
     }
-
     p {
       opacity: 0.8;
       margin-top: 10px;
     }
-
     button {
       margin-top: 30px;
       padding: 12px 28px;
@@ -41,7 +34,17 @@
       font-size: 1em;
       cursor: pointer;
     }
-
+    input, select {
+      width: 90%;
+      padding: 12px;
+      margin-top: 12px;
+      background: #111;
+      border: 1px solid #444;
+      color: #fff;
+    }
+    .hidden {
+      display: none;
+    }
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -50,10 +53,60 @@
 </head>
 
 <body>
-  <div class="container">
+
+  <!-- PANTALLA INICIAL -->
+  <div class="container" id="home">
     <h1>BUNKERMEX</h1>
     <p>Infraestructura privada y espacios de resguardo</p>
-    <button>Solicitar acceso</button>
+    <button onclick="showForm()">Solicitar acceso</button>
   </div>
+
+  <!-- FORMULARIO -->
+  <div class="container hidden" id="form">
+    <h1>Solicitud privada</h1>
+
+    <input type="text" placeholder="Nombre completo" required>
+    
+    <select>
+      <option value="">País de residencia</option>
+      <option>México</option>
+      <option>Otro</option>
+    </select>
+
+    <select>
+      <option value="">Presupuesto mínimo disponible</option>
+      <option>Menos de $15 M MXN</option>
+      <option>$15–20 M MXN</option>
+      <option>$20–30 M MXN</option>
+      <option>Más de $30 M MXN</option>
+    </select>
+
+    <button onclick="submitForm()">Enviar solicitud</button>
+  </div>
+
+  <!-- MENSAJE FINAL -->
+  <div class="container hidden" id="thanks">
+    <h1>Solicitud recibida</h1>
+    <p>Su información ha sido enviada.</p>
+    <p><strong>Usted será contactado.</strong></p>
+
+    <p style="margin-top:40px; font-size:0.85em; opacity:0.6;">
+      Donaciones voluntarias:<br>
+      (aquí luego ponemos wallet / info)
+    </p>
+  </div>
+
+  <script>
+    function showForm() {
+      document.getElementById("home").classList.add("hidden");
+      document.getElementById("form").classList.remove("hidden");
+    }
+
+    function submitForm() {
+      document.getElementById("form").classList.add("hidden");
+      document.getElementById("thanks").classList.remove("hidden");
+    }
+  </script>
+
 </body>
 </html>
