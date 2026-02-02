@@ -69,6 +69,13 @@
     }
     .wallet-box p { margin: 12px 0; font-family: monospace; font-size: 1.1em; }
     .hidden { display: none; }
+    .info-text {
+      font-size: 0.95em;
+      color: #bbb;
+      text-align: center;
+      margin-top: 20px;
+      line-height: 1.5em;
+    }
   </style>
 </head>
 <body>
@@ -77,6 +84,12 @@
     <h1>Bienvenido a BunkerMex Private</h1>
     <p>Solo usuarios preseleccionados podrán registrarse.</p>
     <button onclick="showForm()">Solicitar Acceso</button>
+    <div class="info-text">
+      BunkerMex Private es un programa exclusivo de evaluación de clientes para adquisición de bunkers premium en México.<br>
+      Al enviar tu solicitud, nuestro equipo revisará tu información y presupuesto para confirmar tu elegibilidad.<br>
+      Solo los clientes seleccionados serán contactados vía correo electrónico para los siguientes pasos del proceso.<br>
+      Toda la información que proporciones se mantendrá estrictamente confidencial.
+    </div>
   </div>
 
   <div class="container hidden" id="form">
