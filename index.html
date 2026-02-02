@@ -12,76 +12,137 @@
   <link rel="shortcut icon" href="Icon-192_20260202_050625_0000.png">
 
   <!-- Fuente premium -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
+    /* BODY */
     body {
       font-family: 'Roboto', sans-serif;
-      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+      background: linear-gradient(135deg, #0b0b0b, #1c1c1c);
       color: #fff;
       margin: 0;
       padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
+
+    /* CONTENEDORES */
     .container {
       max-width: 500px;
-      margin: 50px auto;
-      padding: 30px;
-      background: #111;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(255,87,34,0.4);
+      padding: 40px;
+      background: rgba(20, 20, 20, 0.9);
+      border-radius: 25px;
+      box-shadow: 0 0 40px rgba(255,87,34,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
     }
-    h1, h2 { text-align: center; }
-    h1 { font-weight: 700; margin-bottom: 20px; font-size: 2em; }
-    h2 { font-weight: 500; margin-bottom: 20px; font-size: 1.5em; }
-    p { margin-bottom: 15px; }
-    input, select, button {
-      width: 100%;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 10px;
-      border: none;
-      font-size: 1em;
-      font-family: 'Roboto', sans-serif;
-    }
-    input, select { background: #222; color: #fff; }
-    input::placeholder, select option { color: #bbb; }
-    button {
-      background-color: #ff5722;
-      color: #fff;
+
+    /* TITULOS */
+    h1 {
+      font-family: 'Roboto Slab', serif;
+      font-size: 2.2em;
       font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+    h2 {
+      font-family: 'Roboto Slab', serif;
+      font-size: 1.6em;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    /* PARRAFOS */
+    p {
+      line-height: 1.6em;
+      font-size: 1em;
+      color: #ccc;
+      margin: 0;
+    }
+
+    /* INPUTS Y SELECT */
+    input, select {
+      width: 100%;
+      padding: 18px;
+      margin-bottom: 15px;
+      border-radius: 15px;
+      border: none;
+      background: #1b1b1b;
+      color: #fff;
+      font-size: 1em;
+    }
+    input::placeholder, select option { color: #888; }
+
+    /* BOTONES PREMIUM */
+    button {
+      width: 100%;
+      padding: 18px;
+      border-radius: 15px;
+      border: none;
+      font-size: 1.1em;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #ff5722, #e64a19);
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(255,87,34,0.3);
+      box-shadow: 0 6px 20px rgba(255,87,34,0.4);
+      transition: all 0.4s ease;
     }
     button:hover {
-      background-color: #e64a19;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(255,87,34,0.5);
+      background: linear-gradient(135deg, #e64a19, #ff5722);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(255,87,34,0.6);
     }
-    #thanks { text-align: center; margin-top: 20px; }
-    .wallet-box {
-      margin-top: 30px;
-      padding: 20px;
-      background: #222;
-      border-radius: 15px;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(255,87,34,0.2);
-    }
-    .wallet-box p { margin: 12px 0; font-family: monospace; font-size: 1.1em; }
+
+    /* HIDDEN */
     .hidden { display: none; }
+
+    /* INFO INICIAL */
     .info-text {
       font-size: 0.95em;
-      color: #bbb;
-      text-align: center;
+      color: #aaa;
+      line-height: 1.6em;
       margin-top: 20px;
-      line-height: 1.5em;
+    }
+
+    /* THANKS / WALLET */
+    .wallet-box {
+      margin-top: 30px;
+      padding: 25px;
+      background: #1b1b1b;
+      border-radius: 20px;
+      box-shadow: 0 5px 25px rgba(255,87,34,0.2);
+      text-align: center;
+    }
+    .wallet-box p {
+      font-family: monospace;
+      font-size: 1.1em;
+      margin: 12px 0;
+      color: #fff;
+    }
+    .wallet-box p b {
+      color: #ff5722;
+    }
+
+    /* ANIMACION DE ENTRADA */
+    .fade-in {
+      animation: fadeIn 1s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
 
-  <div class="container" id="home">
-    <h1>Bienvenido a BunkerMex Private</h1>
+  <!-- INICIO -->
+  <div class="container fade-in" id="home">
+    <h1>BunkerMex Private</h1>
     <p>Solo usuarios preseleccionados podrán registrarse.</p>
     <button onclick="showForm()">Solicitar Acceso</button>
     <div class="info-text">
@@ -92,7 +153,8 @@
     </div>
   </div>
 
-  <div class="container hidden" id="form">
+  <!-- FORMULARIO -->
+  <div class="container fade-in hidden" id="form">
     <h2>Formulario de Solicitud</h2>
     <input type="text" id="name" placeholder="Nombre completo">
     <input type="email" id="email" placeholder="Correo electrónico">
@@ -107,7 +169,8 @@
     </p>
   </div>
 
-  <div class="container hidden" id="thanks">
+  <!-- GRACIAS -->
+  <div class="container fade-in hidden" id="thanks">
     <h2>Gracias por enviar tu solicitud</h2>
     <p>Te contactaremos pronto vía correo electrónico.</p>
     
@@ -118,7 +181,7 @@
     </div>
   </div>
 
-  <!-- Firebase -->
+  <!-- FIREBASE -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
