@@ -7,8 +7,12 @@
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; background: #111; color: #fff; }
     .hidden { display: none; }
-    input, select, button { display: block; margin: 10px 0; padding: 10px; width: 100%; }
+    input, select, button { display: block; margin: 10px 0; padding: 10px; width: 100%; border-radius: 5px; border: none; }
+    button { background-color: #ff5722; color: #fff; font-weight: bold; cursor: pointer; }
+    button:hover { background-color: #e64a19; }
     #thanks { text-align: center; margin-top: 50px; }
+    .wallet-box { margin-top: 30px; padding: 20px; background: #222; border-radius: 10px; text-align: center; }
+    .wallet-box p { margin: 10px 0; font-family: monospace; font-size: 1.1em; }
   </style>
 </head>
 <body>
@@ -29,15 +33,20 @@
     </select>
     <input type="number" id="budget" placeholder="Presupuesto mínimo 15,000,000 MXN">
     <button onclick="submitForm()">Enviar Solicitud</button>
-    <p style="font-size:12px;">Tus datos son confidenciales y serán usados solo para evaluación de BunkerMex.</p>
+    <p style="font-size:12px; margin-top:10px;">
+      Tus datos son confidenciales y serán usados solo para evaluación de BunkerMex.
+    </p>
   </div>
 
   <div id="thanks" class="hidden">
-    <h2>Gracias por enviar tu solicitud</h2>
-    <p>Te contactaremos pronto vía correo electrónico.</p>
-    <p>Si deseas, puedes apoyar con una donación a nuestra wallet:</p>
-    <p>BTC Metamask: <b>bc1qt8shw83caflya0mpps2tn9npshv0ghn7vr7lkr</b></p>
-    <p>ETH Metamask: <b>0x9D00E37661c4AaAC96b7f385d0B8BcDA5f243D6a</b></p>
+    <h2 style="margin-bottom: 20px; font-size: 1.8em;">Gracias por enviar tu solicitud</h2>
+    <p style="margin-bottom: 15px; font-size: 1.1em;">Te contactaremos pronto vía correo electrónico.</p>
+    
+    <div class="wallet-box">
+      <p style="font-weight: bold; margin-bottom: 10px;">Si deseas, puedes apoyar con una donación a nuestra wallet:</p>
+      <p>BTC: <b>bc1qt8shw83caflya0mpps2tn9npshv0ghn7vr7lkr</b></p>
+      <p>ETH: <b>0x9D00E37661c4AaAC96b7f385d0B8BcDA5f243D6a</b></p>
+    </div>
   </div>
 
   <!-- Firebase -->
@@ -78,6 +87,11 @@
       const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
       if (!emailPattern.test(email)) {
         alert("Por favor ingresa un correo válido.");
+        return;
+      }
+
+      if (country !== "México") {
+        alert("Solo usuarios de México pueden enviar la solicitud.");
         return;
       }
 
