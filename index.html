@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BunkerMex Private</title>
 
-  <!-- Favicon / Iconos -->
+  <!-- Iconos -->
   <link rel="icon" type="image/png" sizes="192x192" href="Icon-192_20260202_050625_0000.png">
   <link rel="icon" type="image/png" sizes="512x512" href="Icon-512_20260202_050844_0000.png">
   <link rel="apple-touch-icon" href="Icon-512_20260202_050844_0000.png">
@@ -127,7 +127,6 @@
     .wallet-box p b {
       color: #ccc;
     }
-
   </style>
 </head>
 <body>
@@ -148,14 +147,18 @@
   <!-- FORMULARIO -->
   <div class="container hidden" id="form">
     <h2>Formulario de Solicitud</h2>
-    <input type="text" id="name" placeholder="Nombre completo">
-    <input type="email" id="email" placeholder="Correo electrónico">
-    <select id="country">
+    <input type="text" id="name" placeholder="Nombre completo" required autocomplete="name" />
+    <input type="email" id="email" placeholder="Correo electrónico" required autocomplete="email" />
+    <select id="country" required>
       <option value="">País</option>
       <option value="México">México</option>
     </select>
-    <input type="number" id="budget" placeholder="Presupuesto mínimo 15,000,000 MXN">
-    <button onclick="submitForm()">Enviar Solicitud</button>
+    <input type="number" id="budget" placeholder="Presupuesto mínimo 15,000,000 MXN" required min="15000000" step="100000" />
+    <input type="text" id="hp_field" name="hp_field" style="display:none" tabindex="-1" autocomplete="off" />
+    <button id="submitBtn" onclick="submitForm()">
+      <span id="btnText">Enviar Solicitud</span>
+      <span id="btnSpinner" class="hidden"> ⏳</span>
+    </button>
     <p style="font-size:12px; margin-top:10px;">
       Tus datos son confidenciales y serán usados solo para evaluación de BunkerMex.
     </p>
@@ -167,9 +170,9 @@
     <p>Te contactaremos pronto vía correo electrónico.</p>
     
     <div class="wallet-box">
-      <p style="font-weight: bold;">Si deseas, puedes apoyar con una donación a nuestra wallet:</p>
-      <p>BTC: <b>bc1qt8shw83caflya0mpps2tn9npshv0ghn7vr7lkr</b></p>
-      <p>ETH: <b>0x9D00E37661c4AaAC96b7f385d0B8BcDA5f243D6a</b></p>
+      <p style="font-weight:bold;">Si deseas, puedes apoyar con una donación:</p>
+      <p>BTC: <span id="btc">bc1qt8shw83caflya0mpps2tn9npshv0ghn7vr7lkr</span> <button onclick="copyToClipboard('btc')">Copiar</button></p>
+      <p>ETH: <span id="eth">0x9D00E37661c4AaAC96b7f385d0B8BcDA5f243D6a</span> <button onclick="copyToClipboard('eth')">Copiar</button></p>
     </div>
   </div>
 
@@ -191,50 +194,68 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    function showForm() {
+    function esc(s){ return String(s).replace(/[<>]/g,''); }
+
+    function copyToClipboard(id){
+      const t = document.getElementById(id).innerText;
+      navigator.clipboard?.writeText(t).then(()=> alert('Dirección copiada al portapapeles.'));
+    }
+
+    function canSendThrottled(){
+      const key = 'bunker_last_send';
+      const last = localStorage.getItem(key);
+      if(!last) return true;
+      return (Date.now() - Number(last)) > 1000*60*60; // 1 hora
+    }
+    function markSent(){ localStorage.setItem('bunker_last_send', String(Date.now())); }
+
+    function showForm(){
       document.getElementById("home").classList.add("hidden");
       document.getElementById("form").classList.remove("hidden");
     }
 
-    function submitForm() {
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const country = document.getElementById("country").value;
-      const budget = Number(document.getElementById("budget").value);
+    async function submitForm(){
+      const hp = document.getElementById('hp_field').value;
+      if(hp.length>0){ alert('Detección bot.'); return; }
+      if(!canSendThrottled()){ alert('Ya enviaste una solicitud recientemente. Espera.'); return; }
 
-      if (!name || !email || !country || !budget) {
-        alert("Por favor completa todos los campos antes de enviar.");
+      const name = esc(document.getElementById('name').value.trim());
+      const email = esc(document.getElementById('email').value.trim());
+      const country = document.getElementById('country').value;
+      const budget = Number(document.getElementById('budget').value);
+
+      if(!name || !email || !country || !budget){
+        alert('Por favor completa todos los campos antes de enviar.');
         return;
       }
+      const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if(!EMAIL_RE.test(email)){ alert('Por favor ingresa un correo válido.'); return; }
+      if(country !== 'México'){ alert('Solo usuarios de México pueden enviar la solicitud.'); return; }
+      if(budget < 15000000){ alert('El presupuesto mínimo aceptado es de 15,000,000 MXN.'); return; }
 
-      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-      if (!emailPattern.test(email)) {
-        alert("Por favor ingresa un correo válido.");
-        return;
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      document.getElementById('btnText').classList.add('hidden');
+      document.getElementById('btnSpinner').classList.remove('hidden');
+
+      try {
+        await db.collection('solicitudes').add({
+          nombre: name,
+          email: email,
+          pais: country,
+          presupuesto: budget,
+          ua: navigator.userAgent,
+          fecha: new Date()
+        });
+        markSent();
+        document.getElementById('form').classList.add('hidden');
+        document.getElementById('thanks').classList.remove('hidden');
+      } catch(err){
+        alert('Error enviando formulario: ' + (err.message || err));
+        btn.disabled = false;
+        document.getElementById('btnText').classList.remove('hidden');
+        document.getElementById('btnSpinner').classList.add('hidden');
       }
-
-      if (country !== "México") {
-        alert("Solo usuarios de México pueden enviar la solicitud.");
-        return;
-      }
-
-      if (budget < 15000000) {
-        alert("El presupuesto mínimo aceptado es de 15,000,000 MXN.");
-        return;
-      }
-
-      db.collection("solicitudes").add({
-        nombre: name,
-        email: email,
-        pais: country,
-        presupuesto: budget,
-        fecha: new Date()
-      }).then(() => {
-        document.getElementById("form").classList.add("hidden");
-        document.getElementById("thanks").classList.remove("hidden");
-      }).catch((error) => {
-        alert("Error enviando formulario: " + error);
-      });
     }
   </script>
 
