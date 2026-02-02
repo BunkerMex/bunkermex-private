@@ -7,9 +7,31 @@
 </head>
 <body>
 
-<h1>BunkerMex</h1>
-<p>Infraestructura privada y confidencial</p>
+<div class="container">
+  <h1>BunkerMex</h1>
+  <p class="subtitle">
+    Infraestructura privada y espacios de resguardo<br>
+    México
+  </p>
 
-<script src="app.js"></script>
-</body>
-</html>
+  <p class="price">
+    Inversión mínima considerada:<br>
+    <strong>$15,000,000 MXN</strong>
+  </p>
+
+  <form id="applyForm">
+    <input type="text" placeholder="Nombre completo" required>
+    <input type="number" placeholder="Patrimonio estimado (MXN)" required>
+    <input type="text" placeholder="Estado de la República" required>
+
+    <select required>
+      <option value="">Motivo del proyecto</option>
+      <option>Protección patrimonial</option>
+      <option>Continuidad familiar</option>
+      <option>Infraestructura privada</option>
+    </select>
+
+    <textarea placeholder="Explique brevemente su interés" required></textarea>
+
+    <button type="submit">Enviar solicitud</button>
+  </form
