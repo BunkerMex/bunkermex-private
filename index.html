@@ -3,140 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BunkerMex</title>
-
+  <title>BunkerMex Private</title>
   <style>
-    body {
-      margin: 0;
-      background: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-    .container {
-      padding: 40px 20px;
-      animation: fadeIn 1.2s ease-in;
-    }
-    h1 {
-      font-size: 2.2em;
-      letter-spacing: 2px;
-    }
-    p {
-      opacity: 0.8;
-      margin-top: 10px;
-    }
-    button {
-      margin-top: 30px;
-      padding: 12px 28px;
-      background: transparent;
-      border: 1px solid #fff;
-      color: #fff;
-      font-size: 1em;
-      cursor: pointer;
-    }
-    input, select {
-      width: 90%;
-      padding: 12px;
-      margin-top: 12px;
-      background: #111;
-      border: 1px solid #444;
-      color: #fff;
-    }
-    .hidden {
-      display: none;
-    }
-    .privacy {
-      font-size: 0.75em;
-      opacity: 0.6;
-      margin-top: 15px;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    body { font-family: Arial, sans-serif; padding: 20px; background: #111; color: #fff; }
+    .hidden { display: none; }
+    input, select, button { display: block; margin: 10px 0; padding: 10px; width: 100%; }
+    #thanks { text-align: center; margin-top: 50px; }
   </style>
 </head>
-
 <body>
 
-  <!-- PANTALLA INICIAL -->
-  <div class="container" id="home">
-    <h1>BUNKERMEX</h1>
-    <p>Infraestructura privada y espacios de resguardo</p>
-    <button onclick="showForm()">Solicitar acceso</button>
+  <div id="home">
+    <h1>Bienvenido a BunkerMex Private</h1>
+    <p>Solo usuarios preseleccionados podrán registrarse.</p>
+    <button onclick="showForm()">Solicitar Acceso</button>
   </div>
 
-  <!-- FORMULARIO -->
-  <div class="container hidden" id="form">
-    <h1>Solicitud privada</h1>
-
-    <input type="text" id="name" placeholder="Nombre completo" required>
-    <input type="email" id="email" placeholder="Correo electrónico" required>
-    
-    <select id="country" required>
-      <option value="">País de residencia</option>
-      <option>México</option>
-      <option>Otro</option>
+  <div id="form" class="hidden">
+    <h2>Formulario de Solicitud</h2>
+    <input type="text" id="name" placeholder="Nombre completo">
+    <input type="email" id="email" placeholder="Correo electrónico">
+    <select id="country">
+      <option value="">País</option>
+      <option value="México">México</option>
     </select>
-
-    <select id="budget" required>
-      <option value="">Presupuesto mínimo disponible</option>
-      <option>Menos de $15 M MXN</option>
-      <option>$15–20 M MXN</option>
-      <option>$20–30 M MXN</option>
-      <option>Más de $30 M MXN</option>
-    </select>
-
-    <button onclick="submitForm()">Enviar solicitud</button>
-
-    <p class="privacy">
-      Sus datos son confidenciales y solo serán utilizados para evaluar la viabilidad del proyecto. 
-      No se compartirán con terceros.
-    </p>
+    <input type="number" id="budget" placeholder="Presupuesto mínimo (MXN)">
+    <button onclick="submitForm()">Enviar Solicitud</button>
+    <p style="font-size:12px;">Tus datos son confidenciales y serán usados solo para evaluación de BunkerMex.</p>
   </div>
 
-  <!-- MENSAJE FINAL -->
-  <div class="container hidden" id="thanks">
-    <h1>Solicitud recibida</h1>
-    <p>Su información ha sido enviada.</p>
-    <p><strong>Usted será contactado.</strong></p>
-
-    <p style="margin-top:40px; font-size:0.85em; opacity:0.6;">
-      Donaciones voluntarias:<br>
-      Metamask / Crypto: <strong>bc1qt8shw83caflya0mpps2tn9npshv0ghn7vr7lkr</strong><br>
-      Gracias por su discreción <strong></strong>
-    </p>
+  <div id="thanks" class="hidden">
+    <h2>Gracias por enviar tu solicitud</h2>
+    <p>Te contactaremos pronto vía correo electrónico.</p>
+    <p>Si deseas, puedes apoyar con una donación a nuestra wallet:</p>
+    <p>Metamask: <b>0xTuWalletAqui</b></p>
   </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
   <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCIF6ReBSMTs9v_3a_Qe9nSwxYjFtmcBag",
+      authDomain: "bunkermexapp.firebaseapp.com",
+      projectId: "bunkermexapp",
+      storageBucket: "bunkermexapp.firebasestorage.app",
+      messagingSenderId: "964519024160",
+      appId: "1:964519024160:web:ffa5bb5b6a3d08b9cb4e45",
+      measurementId: "G-78EDX96D6N"
+    };
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
     function showForm() {
       document.getElementById("home").classList.add("hidden");
       document.getElementById("form").classList.remove("hidden");
     }
 
     function submitForm() {
-      // Tomar los valores
       const name = document.getElementById("name").value.trim();
       const email = document.getElementById("email").value.trim();
       const country = document.getElementById("country").value;
       const budget = document.getElementById("budget").value;
 
-      // Validar campos obligatorios
       if (!name || !email || !country || !budget) {
         alert("Por favor completa todos los campos antes de enviar.");
         return;
       }
 
-      // Validar formato de correo simple
       const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
       if (!emailPattern.test(email)) {
         alert("Por favor ingresa un correo válido.");
         return;
       }
 
-      // Mostrar mensaje final
-      document.getElementById("form").classList.add("hidden");
-      document.getElementById("thanks").classList.remove("hidden");
+      db.collection("solicitudes").add({
+        nombre: name,
+        email: email,
+        pais: country,
+        presupuesto: budget,
+        fecha: new Date()
+      }).then(() => {
+        document.getElementById("form").classList.add("hidden");
+        document.getElementById("thanks").classList.remove("hidden");
+      }).catch((error) => {
+        alert("Error enviando formulario: " + error);
+      });
     }
   </script>
 
