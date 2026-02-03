@@ -1,76 +1,99 @@
-/* Estilos generales */
+/* ======================
+   Estilos generales
+====================== */
 body {
   margin: 0;
-  background-color: #0b0b0b;
-  color: #ffffff;
-  font-family: Arial, sans-serif;
+  padding: 0;
+  background: radial-gradient(circle at top, #0a0a0a, #1f1f1f);
+  color: #fff;
+  font-family: 'Roboto', Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-/* Contenedores */
+/* Contenedor principal */
 .container {
   max-width: 420px;
+  width: 90%;
   margin: auto;
-  padding: 40px 20px;
+  padding: 40px 25px;
+  background: rgba(25, 25, 25, 0.95);
+  border-radius: 25px;
+  box-shadow: 0 0 35px rgba(255, 255, 255, 0.08);
   text-align: center;
-  border-radius: 20px;
-  background: rgba(18, 18, 18, 0.95);
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(15px);}
+  to {opacity: 1; transform: translateY(0);}
 }
 
 /* Títulos */
 h1 {
-  letter-spacing: 2px;
-  font-size: 2em;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4em;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.7em;
+  font-weight: 600;
   margin-bottom: 15px;
 }
 
 .subtitle {
-  color: #aaaaaa;
-  margin-bottom: 30px;
-}
-
-h2 {
-  font-size: 1.5em;
+  font-size: 1em;
+  color: #aaa;
   margin-bottom: 20px;
 }
 
-/* Precios / cajas */
-.price {
-  border: 1px solid #333;
-  padding: 15px;
-  margin-bottom: 30px;
-}
-
-/* Formularios */
+/* Inputs, select y textarea */
 form input,
 form select,
 form textarea {
   width: 100%;
   margin-bottom: 15px;
-  padding: 12px;
-  background: #111;
+  padding: 14px;
+  border-radius: 12px;
   border: 1px solid #333;
+  background: #1a1a1a;
   color: #fff;
-  border-radius: 10px;
   font-size: 1em;
 }
 
+form input::placeholder,
+form select option {
+  color: #888;
+}
+
+/* Botones */
 button {
   width: 100%;
-  padding: 12px;
-  background: #1a1a1a;
-  color: #fff;
-  border: 1px solid #555;
+  padding: 15px;
   border-radius: 12px;
-  font-weight: bold;
+  border: none;
+  font-size: 1.1em;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #555, #888);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 button:hover {
-  background: #222;
+  background: linear-gradient(135deg, #777, #aaa);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
 }
 
 /* Elementos ocultos */
@@ -78,14 +101,48 @@ button:hover {
   display: none;
 }
 
-/* Donaciones */
+/* Donaciones / wallets */
 .donation {
   margin-top: 30px;
-  font-size: 12px;
-  color: #888;
+  font-size: 13px;
+  color: #aaa;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.crypto {
-  word-break: break-all;
+/* Caja de wallet con botón copiar */
+.wallet-box {
+  background: #1a1a1a;
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.wallet-box p {
+  margin: 0;
   font-family: monospace;
+  font-weight: 500;
+  color: #fff;
+  word-break: break-all;
+}
+
+.wallet-box button {
+  width: auto;
+  padding: 8px 12px;
+  font-size: 0.9em;
+  border-radius: 8px;
+  background: #333;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.3s;
+}
+
+.wallet-box button:hover {
+  background: #555;
 }
