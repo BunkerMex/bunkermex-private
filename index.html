@@ -70,10 +70,11 @@
     .wallet-box button:hover { background: #666; }
 
     .privacy {
-      font-size: 0.85em;
+      font-size: 0.9em;
       color: #aaa;
-      margin-top: 15px;
+      margin: 15px 0;
       line-height: 1.4em;
+      text-align: center;
     }
   </style>
 </head>
@@ -84,6 +85,11 @@
 <div class="container" id="home">
   <h1>BunkerMex Private</h1>
   <p>Solo usuarios preseleccionados podrán registrarse.</p>
+
+  <p class="privacy">
+    BunkerMex valora tu privacidad. Toda la información que compartas con nosotros será estrictamente confidencial y no será difundida ni compartida con terceros bajo ninguna circunstancia. Al solicitar acceso, aceptas que tus datos se usen únicamente para la evaluación de clientes y contacto personal. Agradecemos la privacidad.
+  </p>
+
   <button onclick="showForm()">Solicitar Acceso</button>
 </div>
 
@@ -97,11 +103,6 @@
     <option value="México">México</option>
   </select>
   <input type="number" id="budget" placeholder="Presupuesto mínimo 15,000,000 MXN">
-  
-  <div class="privacy">
-    <p>Al enviar este formulario aceptas nuestro <strong>aviso de privacidad</strong> y te comprometes a no difundir la información proporcionada.</p>
-  </div>
-
   <button onclick="submitForm()">Enviar Solicitud</button>
 </div>
 
