@@ -68,6 +68,13 @@
     .wallet-box p { margin: 0 0 8px 0; word-break: break-all; font-family: monospace; }
     .wallet-box button { width: 100%; padding: 10px; border-radius: 10px; background: #444; border: none; cursor: pointer; color: #fff; }
     .wallet-box button:hover { background: #666; }
+
+    .privacy {
+      font-size: 0.85em;
+      color: #aaa;
+      margin-top: 15px;
+      line-height: 1.4em;
+    }
   </style>
 </head>
 
@@ -90,6 +97,11 @@
     <option value="México">México</option>
   </select>
   <input type="number" id="budget" placeholder="Presupuesto mínimo 15,000,000 MXN">
+  
+  <div class="privacy">
+    <p>Al enviar este formulario aceptas nuestro <strong>aviso de privacidad</strong> y te comprometes a no difundir la información proporcionada.</p>
+  </div>
+
   <button onclick="submitForm()">Enviar Solicitud</button>
 </div>
 
