@@ -11,10 +11,10 @@
   <link rel="apple-touch-icon" href="Icon-512_20260202_050844_0000.png">
   <link rel="shortcut icon" href="Icon-192_20260202_050625_0000.png">
 
-  <!-- Manifest PWA -->
+  <!-- Manifest -->
   <link rel="manifest" href="manifest.json">
 
-  <!-- Fuentes elegantes -->
+  <!-- Fuentes -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
@@ -29,7 +29,6 @@
       align-items: center;
       min-height: 100vh;
     }
-
     .container {
       width: 90%;
       max-width: 520px;
@@ -44,12 +43,10 @@
       gap: 25px;
       animation: fadeIn 1s ease forwards;
     }
-
     @keyframes fadeIn {
       from {opacity: 0; transform: translateY(15px);}
       to {opacity: 1; transform: translateY(0);}
     }
-
     h1 {
       font-family: 'Playfair Display', serif;
       font-size: 2.4em;
@@ -57,21 +54,18 @@
       letter-spacing: 1px;
       margin-bottom: 15px;
     }
-
     h2 {
       font-family: 'Playfair Display', serif;
       font-size: 1.7em;
       font-weight: 600;
       margin-bottom: 15px;
     }
-
     p {
       font-size: 1em;
       line-height: 1.7em;
       color: #ccc;
       margin: 0;
     }
-
     input, select {
       width: 100%;
       padding: 18px;
@@ -82,8 +76,6 @@
       color: #fff;
       font-size: 1em;
     }
-    input::placeholder, select option { color: #888; }
-
     button {
       width: 100%;
       padding: 18px;
@@ -92,175 +84,79 @@
       font-size: 1.1em;
       font-weight: 700;
       color: #fff;
-      background: linear-gradient(135deg, #555555, #888888);
+      background: linear-gradient(135deg, #555, #888);
       cursor: pointer;
-      box-shadow: 0 6px 25px rgba(255,255,255,0.1);
-      transition: all 0.4s ease;
     }
-    button:hover {
-      background: linear-gradient(135deg, #777777, #aaaaaa);
-      transform: translateY(-3px);
-      box-shadow: 0 10px 35px rgba(255,255,255,0.15);
-    }
-
     .hidden { display: none; }
-
-    .info-text {
-      font-size: 0.95em;
-      color: #aaa;
-      line-height: 1.6em;
-      margin-top: 20px;
-    }
-
-    .wallet-box {
-      width: 100%;
-      padding: 25px;
-      background: #2a2a2a;
-      border-radius: 20px;
-      box-shadow: 0 6px 30px rgba(255,255,255,0.05);
-      text-align: center;
-      margin-top: 20px;
-    }
-    .wallet-box p {
-      font-family: monospace;
-      font-size: 1.1em;
-      margin: 12px 0;
-      color: #fff;
-    }
-    .wallet-box p b {
-      color: #ccc;
-    }
   </style>
 </head>
+
 <body>
 
-  <!-- INICIO -->
-  <div class="container" id="home">
-    <h1>BunkerMex Private</h1>
-    <p>Solo usuarios preseleccionados podrán registrarse.</p>
-    <button onclick="showForm()">Solicitar Acceso</button>
-    <div class="info-text">
-      BunkerMex Private es un programa exclusivo de evaluación de clientes para adquisición de bunkers premium en México.<br>
-      Al enviar tu solicitud, nuestro equipo revisará tu información y presupuesto para confirmar tu elegibilidad.<br>
-      Solo los clientes seleccionados serán contactados vía correo electrónico para los siguientes pasos del proceso.<br>
-      Toda la información que proporciones se mantendrá estrictamente confidencial.
-    </div>
-  </div>
+<div class="container" id="home">
+  <h1>BunkerMex Private</h1>
+  <p>Solo usuarios preseleccionados podrán registrarse.</p>
+  <button onclick="showForm()">Solicitar Acceso</button>
+</div>
 
-  <!-- FORMULARIO -->
-  <div class="container hidden" id="form">
-    <h2>Formulario de Solicitud</h2>
-    <input type="text" id="name" placeholder="Nombre completo" required autocomplete="name" />
-    <input type="email" id="email" placeholder="Correo electrónico" required autocomplete="email" />
-    <select id="country" required>
-      <option value="">País</option>
-      <option value="México">México</option>
-    </select>
-    <input type="number" id="budget" placeholder="Presupuesto mínimo 15,000,000 MXN" required min="15000000" step="100000" />
-    <input type="text" id="hp_field" name="hp_field" style="display:none" tabindex="-1" autocomplete="off" />
-    <button id="submitBtn" onclick="submitForm()">
-      <span id="btnText">Enviar Solicitud</span>
-      <span id="btnSpinner" class="hidden"> ⏳</span>
-    </button>
-    <p style="font-size:12px; margin-top:10px;">
-      Tus datos son confidenciales y serán usados solo para evaluación de BunkerMex.
-    </p>
-  </div>
+<div class="container hidden" id="form">
+  <h2>Formulario de Solicitud</h2>
+  <input type="text" id="name" placeholder="Nombre completo">
+  <input type="email" id="email" placeholder="Correo electrónico">
+  <select id="country">
+    <option value="">País</option>
+    <option value="México">México</option>
+  </select>
+  <input type="number" id="budget" placeholder="Presupuesto mínimo 15,000,000 MXN">
+  <button onclick="submitForm()">Enviar Solicitud</button>
+</div>
 
-  <!-- GRACIAS -->
-  <div class="container hidden" id="thanks">
-    <h2>Gracias por enviar tu solicitud</h2>
-    <p>Te contactaremos pronto vía correo electrónico.</p>
-    
-    <div class="wallet-box">
-      <p style="font-weight:bold;">Si deseas, puedes apoyar con una donación:</p>
-      <p>BTC: <span id="btc">bc1qt8shw83caflya0mpps2tn9npshv0ghn7vr7lkr</span> <button onclick="copyToClipboard('btc')">Copiar</button></p>
-      <p>ETH: <span id="eth">0x9D00E37661c4AaAC96b7f385d0B8BcDA5f243D6a</span> <button onclick="copyToClipboard('eth')">Copiar</button></p>
-    </div>
-  </div>
+<div class="container hidden" id="thanks">
+  <h2>Gracias</h2>
+  <p>Te contactaremos pronto.</p>
+</div>
 
-  <!-- FIREBASE -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyCIF6ReBSMTs9v_3a_Qe9nSwxYjFtmcBag",
-      authDomain: "bunkermexapp.firebaseapp.com",
-      projectId: "bunkermexapp",
-      storageBucket: "bunkermexapp.firebasestorage.app",
-      messagingSenderId: "964519024160",
-      appId: "1:964519024160:web:ffa5bb5b6a3d08b9cb4e45",
-      measurementId: "G-78EDX96D6N"
-    };
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCIF6ReBSMTs9v_3a_Qe9nSwxYjFtmcBag",
+    authDomain: "bunkermexapp.firebaseapp.com",
+    projectId: "bunkermexapp"
+  };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-    function esc(s){ return String(s).replace(/[<>]/g,''); }
+  function showForm(){
+    home.classList.add('hidden');
+    form.classList.remove('hidden');
+  }
 
-    function copyToClipboard(id){
-      const t = document.getElementById(id).innerText;
-      navigator.clipboard?.writeText(t).then(()=> alert('Dirección copiada al portapapeles.'));
-    }
+  function submitForm(){
+    db.collection('solicitudes').add({
+      nombre: name.value,
+      email: email.value,
+      pais: country.value,
+      presupuesto: budget.value,
+      fecha: new Date()
+    }).then(()=>{
+      form.classList.add('hidden');
+      thanks.classList.remove('hidden');
+    });
+  }
+</script>
 
-    function canSendThrottled(){
-      const key = 'bunker_last_send';
-      const last = localStorage.getItem(key);
-      if(!last) return true;
-      return (Date.now() - Number(last)) > 1000*60*60; // 1 hora
-    }
-    function markSent(){ localStorage.setItem('bunker_last_send', String(Date.now())); }
-
-    function showForm(){
-      document.getElementById("home").classList.add("hidden");
-      document.getElementById("form").classList.remove("hidden");
-    }
-
-    async function submitForm(){
-      const hp = document.getElementById('hp_field').value;
-      if(hp.length>0){ alert('Detección bot.'); return; }
-      if(!canSendThrottled()){ alert('Ya enviaste una solicitud recientemente. Espera.'); return; }
-
-      const name = esc(document.getElementById('name').value.trim());
-      const email = esc(document.getElementById('email').value.trim());
-      const country = document.getElementById('country').value;
-      const budget = Number(document.getElementById('budget').value);
-
-      if(!name || !email || !country || !budget){
-        alert('Por favor completa todos los campos antes de enviar.');
-        return;
-      }
-      const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if(!EMAIL_RE.test(email)){ alert('Por favor ingresa un correo válido.'); return; }
-      if(country !== 'México'){ alert('Solo usuarios de México pueden enviar la solicitud.'); return; }
-      if(budget < 15000000){ alert('El presupuesto mínimo aceptado es de 15,000,000 MXN.'); return; }
-
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      document.getElementById('btnText').classList.add('hidden');
-      document.getElementById('btnSpinner').classList.remove('hidden');
-
-      try {
-        await db.collection('solicitudes').add({
-          nombre: name,
-          email: email,
-          pais: country,
-          presupuesto: budget,
-          ua: navigator.userAgent,
-          fecha: new Date()
-        });
-        markSent();
-        document.getElementById('form').classList.add('hidden');
-        document.getElementById('thanks').classList.remove('hidden');
-      } catch(err){
-        alert('Error enviando formulario: ' + (err.message || err));
-        btn.disabled = false;
-        document.getElementById('btnText').classList.remove('hidden');
-        document.getElementById('btnSpinner').classList.add('hidden');
-      }
-    }
-  </script>
+<!-- SERVICE WORKER (CLAVE PARA QUITAR EL BROWSER) -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js');
+  });
+}
+</script>
 
 </body>
 </html>
