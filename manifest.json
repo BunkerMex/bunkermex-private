@@ -2,11 +2,12 @@
   "name": "BunkerMex Private",
   "short_name": "BunkerMex",
   "description": "Programa exclusivo de evaluación de clientes para adquisición de bunkers premium en México.",
-  "start_url": ".",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#0a0a0a",
-  "theme_color": "#0a0a0a",
-  "orientation": "portrait-primary",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "Icon-192_20260202_050625_0000.png",
