@@ -47,43 +47,17 @@
       from {opacity: 0; transform: translateY(15px);}
       to {opacity: 1; transform: translateY(0);}
     }
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.4em;
-      font-weight: 700;
-      letter-spacing: 1px;
-      margin-bottom: 15px;
-    }
-    h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.7em;
-      font-weight: 600;
-      margin-bottom: 15px;
-    }
-    p {
-      font-size: 1em;
-      line-height: 1.7em;
-      color: #ccc;
-      margin: 0;
-    }
+    h1 { font-family: 'Playfair Display', serif; font-size: 2.4em; font-weight: 700; margin-bottom: 15px; }
+    h2 { font-family: 'Playfair Display', serif; font-size: 1.7em; font-weight: 600; margin-bottom: 15px; }
+    p { font-size: 1em; line-height: 1.7em; color: #ccc; margin: 0; }
     input, select {
-      width: 100%;
-      padding: 18px;
-      margin-bottom: 15px;
-      border-radius: 15px;
-      border: none;
-      background: #2a2a2a;
-      color: #fff;
-      font-size: 1em;
+      width: 100%; padding: 18px; margin-bottom: 15px;
+      border-radius: 15px; border: none; background: #2a2a2a;
+      color: #fff; font-size: 1em;
     }
     button {
-      width: 100%;
-      padding: 18px;
-      border-radius: 15px;
-      border: none;
-      font-size: 1.1em;
-      font-weight: 700;
-      color: #fff;
+      width: 100%; padding: 18px; border-radius: 15px; border: none;
+      font-size: 1.1em; font-weight: 700; color: #fff;
       background: linear-gradient(135deg, #555, #888);
       cursor: pointer;
     }
@@ -93,12 +67,14 @@
 
 <body>
 
+<!-- INICIO -->
 <div class="container" id="home">
   <h1>BunkerMex Private</h1>
   <p>Solo usuarios preseleccionados podrán registrarse.</p>
   <button onclick="showForm()">Solicitar Acceso</button>
 </div>
 
+<!-- FORMULARIO -->
 <div class="container hidden" id="form">
   <h2>Formulario de Solicitud</h2>
   <input type="text" id="name" placeholder="Nombre completo">
@@ -111,6 +87,7 @@
   <button onclick="submitForm()">Enviar Solicitud</button>
 </div>
 
+<!-- GRACIAS -->
 <div class="container hidden" id="thanks">
   <h2>Gracias</h2>
   <p>Te contactaremos pronto.</p>
@@ -121,38 +98,68 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
 <script>
+  // Inicialización Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCIF6ReBSMTs9v_3a_Qe9nSwxYjFtmcBag",
     authDomain: "bunkermexapp.firebaseapp.com",
     projectId: "bunkermexapp"
   };
-
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
+  // Obtener referencias
+  const home = document.getElementById('home');
+  const form = document.getElementById('form');
+  const thanks = document.getElementById('thanks');
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const countryInput = document.getElementById('country');
+  const budgetInput = document.getElementById('budget');
+
+  // Mostrar formulario
   function showForm(){
     home.classList.add('hidden');
     form.classList.remove('hidden');
   }
 
+  // Enviar formulario
   function submitForm(){
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const country = countryInput.value;
+    const budget = Number(budgetInput.value);
+
+    // Validaciones
+    if(!name || !email || !country || !budget){
+      alert('Por favor completa todos los campos.');
+      return;
+    }
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!EMAIL_RE.test(email)){ alert('Ingresa un correo válido.'); return; }
+    if(country !== 'México'){ alert('Solo usuarios de México pueden enviar la solicitud.'); return; }
+    if(budget < 15000000){ alert('El presupuesto mínimo aceptado es 15,000,000 MXN.'); return; }
+
+    // Enviar a Firebase
     db.collection('solicitudes').add({
-      nombre: name.value,
-      email: email.value,
-      pais: country.value,
-      presupuesto: budget.value,
+      nombre: name,
+      email: email,
+      pais: country,
+      presupuesto: budget,
+      ua: navigator.userAgent,
       fecha: new Date()
     }).then(()=>{
       form.classList.add('hidden');
       thanks.classList.remove('hidden');
+    }).catch(err=>{
+      alert('Error enviando formulario: ' + err.message);
     });
   }
 </script>
 
-<!-- SERVICE WORKER (CLAVE PARA QUITAR EL BROWSER) -->
+<!-- Service Worker para modo standalone (quitamos barra del navegador) -->
 <script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=> {
     navigator.serviceWorker.register('./sw.js');
   });
 }
