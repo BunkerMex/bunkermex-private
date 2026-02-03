@@ -62,6 +62,12 @@
       cursor: pointer;
     }
     .hidden { display: none; }
+
+    .donation { margin-top: 20px; font-size: 14px; color: #ccc; }
+    .wallet-box { margin-top: 10px; background: #2a2a2a; padding: 15px; border-radius: 15px; width: 100%; }
+    .wallet-box p { margin: 0 0 8px 0; word-break: break-all; font-family: monospace; }
+    .wallet-box button { width: 100%; padding: 10px; border-radius: 10px; background: #444; border: none; cursor: pointer; color: #fff; }
+    .wallet-box button:hover { background: #666; }
   </style>
 </head>
 
@@ -91,6 +97,21 @@
 <div class="container hidden" id="thanks">
   <h2>Gracias</h2>
   <p>Te contactaremos pronto.</p>
+
+  <div class="donation">
+    <p>Si deseas, puedes apoyar con una donación:</p>
+
+    <div class="wallet-box">
+      <p id="btc">bc1qt8shw83caflya0mpps2tn9npshv0ghn7vr7lkr</p>
+      <button onclick="copyToClipboard('btc')">Copiar Bitcoin</button>
+    </div>
+
+    <div class="wallet-box">
+      <p id="eth">0x9D00E37661c4AaAC96b7f385d0B8BcDA5f243D6a</p>
+      <button onclick="copyToClipboard('eth')">Copiar Ethereum</button>
+    </div>
+
+  </div>
 </div>
 
 <!-- Firebase -->
@@ -98,7 +119,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
 <script>
-  // Inicialización Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCIF6ReBSMTs9v_3a_Qe9nSwxYjFtmcBag",
     authDomain: "bunkermexapp.firebaseapp.com",
@@ -107,7 +127,6 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // Obtener referencias
   const home = document.getElementById('home');
   const form = document.getElementById('form');
   const thanks = document.getElementById('thanks');
@@ -116,30 +135,27 @@
   const countryInput = document.getElementById('country');
   const budgetInput = document.getElementById('budget');
 
-  // Mostrar formulario
   function showForm(){
     home.classList.add('hidden');
     form.classList.remove('hidden');
   }
 
-  // Enviar formulario
   function submitForm(){
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
     const country = countryInput.value;
     const budget = Number(budgetInput.value);
 
-    // Validaciones
     if(!name || !email || !country || !budget){
       alert('Por favor completa todos los campos.');
       return;
     }
+
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(!EMAIL_RE.test(email)){ alert('Ingresa un correo válido.'); return; }
     if(country !== 'México'){ alert('Solo usuarios de México pueden enviar la solicitud.'); return; }
     if(budget < 15000000){ alert('El presupuesto mínimo aceptado es 15,000,000 MXN.'); return; }
 
-    // Enviar a Firebase
     db.collection('solicitudes').add({
       nombre: name,
       email: email,
@@ -154,9 +170,14 @@
       alert('Error enviando formulario: ' + err.message);
     });
   }
+
+  function copyToClipboard(id){
+    const text = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(text).then(()=>alert('Dirección copiada al portapapeles.'));
+  }
 </script>
 
-<!-- Service Worker para modo standalone (quitamos barra del navegador) -->
+<!-- Service Worker para modo standalone -->
 <script>
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=> {
